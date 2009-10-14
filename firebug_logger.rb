@@ -13,7 +13,7 @@ class FirebugLogger
     return [status, headers, body] unless env['firebug.logs']
     response = Rack::Response.new([], status, headers)
     body.each do |line|
-    line.gsub!("</body>", "#{generate_js(env['firebug.logs'])}</body>")
+      line.gsub!("</body>", "#{generate_js(env['firebug.logs'])}</body>")
       response.write(line)
     end
     response.finish
