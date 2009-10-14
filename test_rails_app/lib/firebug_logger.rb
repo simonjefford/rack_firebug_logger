@@ -1,0 +1,1 @@
+../../firebug_logger.rb
