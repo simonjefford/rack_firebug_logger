@@ -1,5 +1,5 @@
 require 'test_app'
-require 'rack_firebug_logger'
+require 'firebug_logger'
 
-use Rack::FirebugLogger
+use FirebugLogger
 run TestApp
