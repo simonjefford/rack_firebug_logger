@@ -33,6 +33,7 @@ class FirebugLogger
     end
     end_group(js)
     js << "</script>"
+    js << "</body>"
     js.join("\n")
   end
 
