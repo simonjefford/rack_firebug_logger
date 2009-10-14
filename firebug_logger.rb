@@ -1,6 +1,7 @@
 class FirebugLogger
-  def initialize(app)
+  def initialize(app, options = {})
     @app = app
+    @options = options
   end
 
   def call(env)
@@ -23,13 +24,34 @@ class FirebugLogger
 
   def generate_js(logs)
     js = ["<script>"]
-    js << "console.group(\"from web\");"
-    logs.each do |log|
+    start_group(js)
+    logs.each do |level, log|
+      level = sanitise_level(level)
       log.gsub!('"', '\"')
-      js << "console.info(\"#{log}\");"
+      js << "console.#{level.to_s}(\"#{log}\");"
     end
-    js << "console.groupEnd();"
+    end_group(js)
     js << "</script>"
     js.join("\n")
+  end
+
+  def start_group(js)
+    if @options[:group]
+      js << "console.group(\"#{@options[:group]}\");"
+    end
+  end
+
+  def sanitise_level(level)
+    if [:info, :debug, :warn, :error].include?(level)
+      level
+    else
+      :debug
+    end
+  end
+
+  def end_group(js)
+    if @options[:group]
+      js << "console.groupEnd();"
+    end
   end
 end

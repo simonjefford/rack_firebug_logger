@@ -36,13 +36,29 @@ class TestFirebugLogger < Test::Unit::TestCase
     assert_logged :info, "log2", body
   end
 
+  def test_grouping
+    app = logger(inner_app, :group => "Mygroup")
+    status, headers, body = app.call("firebug.logs" => [[:info, "log"]])
+    assert_group "Mygroup", body
+  end
+
   private
 
-  def assert_logged(level, message, body)
+  def get_hpricot_doc_from_body(body)
     output = body_to_array(body).join("\n")
-    doc = Hpricot(output)
+    Hpricot(output)
+  end
+
+  def assert_logged(level, message, body)
+    doc = get_hpricot_doc_from_body(body)
     script = doc.at("script").inner_html
     assert_match /console.#{level}\("#{message}"\)/, script
+  end
+
+  def assert_group(name, body)
+    doc = get_hpricot_doc_from_body(body)
+    script = doc.at("script").inner_html
+    assert_match /console.group\("#{name}"\)/, script
   end
 
   def assert_body_equal(expected, actual)
