@@ -24,7 +24,7 @@ class FirebugLogger
   private
 
   def generate_js(logs)
-    js = ["<script>"]
+    js = ["<script type=\"text/javascript\">"]
     start_group(js)
     logs.each do |level, log|
       level = sanitise_level(level)
