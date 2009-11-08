@@ -1,4 +1,6 @@
 module FirebugLog
+  mattr_accessor :enabled
+
   class BrowserLogger
     attr_reader :request
     def initialize(request)
@@ -8,7 +10,9 @@ module FirebugLog
 
     [:info, :debug, :warn, :error].each do |level|
       define_method level do |message|
-        request.env['firebug.logs'] << [level, message]
+        if FirebugLog.enabled
+          request.env['firebug.logs'] << [level, message]
+        end
       end
     end
   end
