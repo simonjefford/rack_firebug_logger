@@ -2,4 +2,4 @@ A small Rack middleware that allows Rack-based applications to
 send Javascript that logs to the Firebug (and WebKit) console.
 
 Also contained in this project is a rails plugin (firebug_logger_fu,
-apologies for the terrible name) that makes it easy to use the middleware)
+apologies for the terrible name) that makes it easy to use the middleware.
